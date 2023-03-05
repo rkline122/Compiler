@@ -8,9 +8,6 @@ LETTER [a-zA-Z]
 (" "|\t|\n)                                                                             /* skip whitespace */
 (\/\/.+)|"/*"([^*]|(\*+[^*/]))*\*+\/                                                    /* C or C++ Style comments*/
 \b[a-zA-Z_][a-zA-Z0-9_]*\b                                                              { return TOKEN_KEYWORD_OR_IDENTIFIER }
-
--- CONSTANTS --
-
 \"([^"\\]|\\.|\\\n)*\"                                                                  {   
                                                                                             if (strlen(yytext) > 160) {
                                                                                                 fprintf(stderr, "scan error: string is longer than 160 characters\n"); return TOKEN_ERROR;
@@ -55,35 +52,26 @@ LETTER [a-zA-Z]
                                                                                             }
                                                                                             return TOKEN_IDENT;       
                                                                                         } 
-
--- OPERATORS --
-
 \+                                                                                      { return TOKEN_ADD; }
 \-                                                                                      { return TOKEN_SUBTRACT; }
 \*                                                                                      { return TOKEN_MULTIPLY; }
 \/                                                                                      { return TOKEN_DIVIDE; }
 \*                                                                                      { return TOKEN_MOD; }
-
 \<                                                                                      { return TOKEN_LESS_THAN; }
 \>                                                                                      { return TOKEN_GREATER_THAN; }
 \<\=                                                                                    { return TOKEN_LESS_THAN_OR_EQUAL_TO; }
 \>\=                                                                                    { return TOKEN_GREATER_THAN_OR_EQUAL_TO; }
 \=\=                                                                                    { return TOKEN_EQUAL_TO; }
 \!\=                                                                                    { return TOKEN_NOT_EQUAL_TO; }
-
 &&                                                                                      { return TOKEN_AND; }
 \|\|                                                                                    { return TOKEN_OR; }
 !                                                                                       { return TOKEN_NOT; }
-
 \=                                                                                      { return TOKEN_ASSIGNMENT; }
 \+=                                                                                     { return TOKEN_ADD_ASSIGN; }
 \-=                                                                                     { return TOKEN_SUB_ASSIGN; }
 \*=                                                                                     { return TOKEN_MULT_ASSIGN; }
 \/=                                                                                     { return TOKEN_DIVIDE_ASSIGN; }
 %=                                                                                      { return TOKEN_MOD_ASSIGN; }
-
--- Delimiters --
-
 \(                                                                                      { return TOKEN_LEFT_PAREN;   }
 \)                                                                                      { return TOKEN_RIGHT_PAREN;  }
 \[                                                                                      { return TOKEN_LEFT_BRACKET; }
@@ -93,7 +81,6 @@ LETTER [a-zA-Z]
 ;                                                                                       { return TOKEN_SEMICOLON;    }
 :                                                                                       { return TOKEN_COLON;        }
 ,                                                                                       { return TOKEN_COMMA;        }
-
 .                                                                                       { fprintf(stderr, "scan error: %s is an invalid token\n", yytext); return TOKEN_ERROR;       }
 %%
 int yywrap()                                                                            { return 1; }
