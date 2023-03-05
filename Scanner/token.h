@@ -2,6 +2,7 @@
 #define TOKEN_H
 
 typedef enum {
+        TOKEN_EOF=0,
         TOKEN_PREPROCESSOR,
         TOKEN_KEYWORD_OR_IDENTIFIER,
         TOKEN_STRING_LITERAL,

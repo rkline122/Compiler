@@ -1,13 +1,17 @@
-% {
-#include "token.h" 
-% }
+%{
+    #include "token.h"
+    #include <string.h>
+    #include <limits.h>
+
+    int fileno(); 
+%}
 DIGIT [0-9]
 LETTER [a-zA-Z]
 %%
-^#[ \t]*(include|define|undef|ifdef|ifndef|if|elif|else|endif|error|pragma)[ \t]+.*     { return TOKEN_PREPROCESSOR }
+^#[ \t]*(include|define|undef|ifdef|ifndef|if|elif|else|endif|error|pragma)[ \t]+.*     { return TOKEN_PREPROCESSOR; }
 (" "|\t|\n)                                                                             /* skip whitespace */
 (\/\/.+)|"/*"([^*]|(\*+[^*/]))*\*+\/                                                    /* C or C++ Style comments*/
-\b[a-zA-Z_][a-zA-Z0-9_]*\b                                                              { return TOKEN_KEYWORD_OR_IDENTIFIER }
+\b[a-zA-Z_][a-zA-Z0-9_]*\b                                                              { return TOKEN_KEYWORD_OR_IDENTIFIER; }
 \"([^"\\]|\\.|\\\n)*\"                                                                  {   
                                                                                             if (strlen(yytext) > 160) {
                                                                                                 fprintf(stderr, "scan error: string is longer than 160 characters\n"); return TOKEN_ERROR;
@@ -56,7 +60,7 @@ LETTER [a-zA-Z]
 \-                                                                                      { return TOKEN_SUBTRACT; }
 \*                                                                                      { return TOKEN_MULTIPLY; }
 \/                                                                                      { return TOKEN_DIVIDE; }
-\*                                                                                      { return TOKEN_MOD; }
+\%                                                                                      { return TOKEN_MOD; }
 \<                                                                                      { return TOKEN_LESS_THAN; }
 \>                                                                                      { return TOKEN_GREATER_THAN; }
 \<\=                                                                                    { return TOKEN_LESS_THAN_OR_EQUAL_TO; }
