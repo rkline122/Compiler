@@ -4,11 +4,13 @@
 typedef enum {
         TOKEN_EOF=0,
         TOKEN_PREPROCESSOR,
-        TOKEN_KEYWORD_OR_IDENTIFIER,
+        TOKEN_IMPORT,
         TOKEN_STRING_LITERAL,
         TOKEN_CHAR_LITERAL,
+        TOKEN_FLOAT_LITERAL,
         TOKEN_INT_LITERAL,
-        TOKEN_IDENT,
+        TOKEN_PERIOD,
+        TOKEN_IDENTIFIER,
         TOKEN_ADD,
         TOKEN_SUBTRACT,
         TOKEN_MULTIPLY,
@@ -39,8 +41,6 @@ typedef enum {
         TOKEN_COLON,
         TOKEN_COMMA,
 	TOKEN_ERROR
-        
-
 } token_t;
 
 #endif

@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "token.h"
 
 int main(){
     int x,y;
     float z = 10.0;
     char c = 'c';    
-
 
     x = 5;
     y = 12;
@@ -15,6 +14,8 @@ int main(){
     printf("x = %d\ny = %d\n", x,y);
     printf("sum: %d\n", add(x,y));
     printf("difference: %d\n", subtract(x,y));
+
+    printf("%d\n", &x);
 
     return 0;
 }

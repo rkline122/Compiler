@@ -4,14 +4,17 @@
     #include <limits.h>
 
     int fileno(); 
+    int yylineno = 0;
 %}
 DIGIT [0-9]
 LETTER [a-zA-Z]
 %%
-^#[ \t]*(include|define|undef|ifdef|ifndef|if|elif|else|endif|error|pragma)[ \t]+.*     { return TOKEN_PREPROCESSOR; }
-(" "|\t|\n)                                                                             /* skip whitespace */
+^#[ \t]*(include|define|undef|ifdef|ifndef|if|elif|else|endif|error|pragma)[ \t]        { return TOKEN_PREPROCESSOR; }
+(\<{LETTER}+\.h\>|\"{LETTER}+\.h\")                                                                          { return TOKEN_IMPORT; }
+(" "|\t)                                                                               /* skip whitespace */
+\n                                                                                      { ++yylineno; }
 (\/\/.+)|"/*"([^*]|(\*+[^*/]))*\*+\/                                                    /* C or C++ Style comments*/
-\b[a-zA-Z_][a-zA-Z0-9_]*\b                                                              { return TOKEN_KEYWORD_OR_IDENTIFIER; }
+\.                                                                                      { return TOKEN_PERIOD; }
 \"([^"\\]|\\.|\\\n)*\"                                                                  {   
                                                                                             if (strlen(yytext) > 160) {
                                                                                                 fprintf(stderr, "scan error: string is longer than 160 characters\n"); return TOKEN_ERROR;
@@ -41,6 +44,13 @@ LETTER [a-zA-Z]
                                                                                             
                                                                                             return TOKEN_CHAR_LITERAL;        
                                                                                         }
+{DIGIT}*\.{DIGIT}+                                                                      {
+                                                                                            if (strtol(yytext, NULL, 10) == LONG_MIN)        {fprintf(stderr, "scan error: integer underflow\n"); return TOKEN_ERROR;}
+                                                                                            else if (strtol(yytext, NULL, 10) == LONG_MAX)   {fprintf(stderr, "scan error: integer overflow\n"); return TOKEN_ERROR;}
+                                                                                            else {
+                                                                                                return TOKEN_FLOAT_LITERAL;
+                                                                                            }
+                                                                                        }  
 {DIGIT}+                                                                                {
                                                                                             if (strtol(yytext, NULL, 10) == LONG_MIN)        {fprintf(stderr, "scan error: integer underflow\n"); return TOKEN_ERROR;}
                                                                                             else if (strtol(yytext, NULL, 10) == LONG_MAX)   {fprintf(stderr, "scan error: integer overflow\n"); return TOKEN_ERROR;}
@@ -54,7 +64,7 @@ LETTER [a-zA-Z]
                                                                                                 fprintf(stderr, "scan error: identifier longer than 160 characters\n"); 
                                                                                                 return TOKEN_ERROR;
                                                                                             }
-                                                                                            return TOKEN_IDENT;       
+                                                                                            return TOKEN_IDENTIFIER;       
                                                                                         } 
 \+                                                                                      { return TOKEN_ADD; }
 \-                                                                                      { return TOKEN_SUBTRACT; }
@@ -85,6 +95,9 @@ LETTER [a-zA-Z]
 ;                                                                                       { return TOKEN_SEMICOLON;    }
 :                                                                                       { return TOKEN_COLON;        }
 ,                                                                                       { return TOKEN_COMMA;        }
-.                                                                                       { fprintf(stderr, "scan error: %s is an invalid token\n", yytext); return TOKEN_ERROR;       }
+.                                                                                       { 
+                                                                                            fprintf(stderr, "[Line %d] scan error: '%s' is an invalid token\n", yylineno, yytext ); 
+                                                                                            return TOKEN_ERROR;       
+                                                                                        }
 %%
 int yywrap()                                                                            { return 1; }
