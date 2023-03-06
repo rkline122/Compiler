@@ -10,8 +10,8 @@ DIGIT [0-9]
 LETTER [a-zA-Z]
 %%
 ^#[ \t]*(include|define|undef|ifdef|ifndef|if|elif|else|endif|error|pragma)[ \t]        { return TOKEN_PREPROCESSOR; }
-(\<{LETTER}+\.h\>|\"{LETTER}+\.h\")                                                                          { return TOKEN_IMPORT; }
-(" "|\t)                                                                               /* skip whitespace */
+(\<{LETTER}+\.h\>|\"{LETTER}+\.h\")                                                     { return TOKEN_IMPORT; }
+(" "|\t)                                                                                /* skip whitespace */
 \n                                                                                      { ++yylineno; }
 (\/\/.+)|"/*"([^*]|(\*+[^*/]))*\*+\/                                                    /* C or C++ Style comments*/
 \.                                                                                      { return TOKEN_PERIOD; }

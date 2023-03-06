@@ -4,7 +4,7 @@ scan: out/main.o out/scanner.o
 out/main.o: main.c token.h
 	gcc main.c -c -o out/main.o
 
-out/scanner.o: scanner.c token.h
+scanner.o: scanner.c token.h
 	gcc scanner.c -c -o out/scanner.o
 
 scanner.c: scanner.flex
