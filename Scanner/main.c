@@ -18,7 +18,7 @@ int main(){
         "TOKEN_FLOAT_LITERAL",
         "TOKEN_INT_LITERAL",
         "TOKEN_PERIOD",
-        "TOKEN_IDENT",
+        "TOKEN_IDENTIFIER",
         "TOKEN_ADD",
         "TOKEN_SUBTRACT",
         "TOKEN_MULTIPLY",
@@ -63,6 +63,5 @@ int main(){
         if (t == TOKEN_EOF) {
             break;
         }
-       printf("token: %s text: %s\n", token_names[t], yytext);
     }
 }
