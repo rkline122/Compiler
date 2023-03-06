@@ -1,14 +1,14 @@
-scan: main.o scanner.o
-	gcc main.o scanner.o -o scan	
+scan: out/main.o out/scanner.o
+	gcc out/main.o out/scanner.o -o out/scan
 
-main.o: main.c token.h
-	gcc main.c -c -o main.o
+out/main.o: main.c token.h
+	gcc main.c -c -o out/main.o
 
-scanner.o: scanner.c token.h
-	gcc scanner.c -c -o scanner.o
+out/scanner.o: scanner.c token.h
+	gcc scanner.c -c -o out/scanner.o
 
 scanner.c: scanner.flex
-	flex -oscanner.c scanner.flex
+	flex -o out/scanner.c scanner.flex
 
 clean:
-	rm -f scanner.c scanner.o main.o scan
+	rm -f out/scanner.c out/scanner.o out/main.o out/scan
