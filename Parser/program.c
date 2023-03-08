@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "token.h"
-
 int main(){
     int x,y;
     float z = 10.0;
